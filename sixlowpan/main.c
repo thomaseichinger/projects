@@ -13,7 +13,7 @@
 #include "vtimer.h"
 #include "ltc4150.h"
 #include "thread.h"
-#include "cc110x_ng.h"
+//#include "maca.h"
 #include "transceiver.h"
 #include "time.h"
 #include "rtc.h"
@@ -48,7 +48,7 @@ void init(char *str){
                 printf("ERROR: radio_address not an 8 bit integer\n");
                 return;
             }
-            sixlowpan_init(TRANSCEIVER_CC1100,r_addr,0);
+            sixlowpan_init(TRANSCEIVER_MC1322X,r_addr,0);
             break;
         case 'r':
             printf("INFO: Initialize as router on radio address %hu\n", r_addr);
@@ -56,7 +56,7 @@ void init(char *str){
                 printf("ERROR: radio_address not an 8 bit integer\n");
                 return;
             }
-            sixlowpan_init(TRANSCEIVER_CC1100, r_addr,0);
+            sixlowpan_init(TRANSCEIVER_MC1322X, r_addr,0);
             ipv6_init_iface_as_router();
             break;
         case 'a':
@@ -65,7 +65,7 @@ void init(char *str){
                 printf("ERROR: radio_address not an 8 bit integer\n");
                 return;
             }
-            sixlowpan_adhoc_init(TRANSCEIVER_CC1100, &std_addr, r_addr);
+            sixlowpan_adhoc_init(TRANSCEIVER_MC1322X, &std_addr, r_addr);
             break;
         case 'b':
             printf("INFO: Initialize as border router on radio address %hu\n", r_addr);
@@ -73,7 +73,7 @@ void init(char *str){
                 printf("ERROR: radio_address not an 8 bit integer\n");
                 return;
             }
-            res = border_initialize(TRANSCEIVER_CC1100, &std_addr);
+            res = border_initialize(TRANSCEIVER_MC1322X, &std_addr);
             switch (res) {
                 case (SUCCESS): printf("INFO: Border router initialized.\n"); break;
                 case (SIXLOWERROR_ADDRESS): printf("ERROR: Illegal IP address: "); 
@@ -116,11 +116,11 @@ void set_radio_chann(char *str){
         printf("Usage: set_chann [channel]\n");
     }
     
-    cc110x_set_channel(chann);
+    maca_set_channel(chann);
 }
 
 void get_r_address(char *str){
-    printf("radio: %hu\n", cc110x_get_address());
+    printf("radio: %hu\n", maca_get_address());
 }
 
 void ip(char *str){
